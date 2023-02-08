@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.module_name = 'web3'
 
   s.swift_version = '5.5'
-  s.ios.deployment_target = '12.0'
+  s.ios.deployment_target = '13.0'
 
   s.source_files = 'web3swift/src/**/*.swift', 'web3swift/lib/**/*.{c,h,swift}'
   s.pod_target_xcconfig = {
@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.preserve_paths = 'web3swift/lib/**/module.map'
 
 
-  s.dependency 'BigInt', '~> 4.0'
+  s.dependency 'BigInt', '~> 5.0'
   s.dependency 'secp256k1.swift', '~> 0.1'
   s.dependency 'GenericJSON', '~> 2.0'
   s.dependency 'Logging', '~> 1.0.0'
