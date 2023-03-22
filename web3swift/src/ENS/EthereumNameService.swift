@@ -105,6 +105,22 @@ public class EthereumNameService: EthereumNameServiceProtocol {
             throw error as? EthereumNameServiceError ?? EthereumNameServiceError.ensUnknown
         }
     }
+    
+    public func resolve(contract: EthereumAddress, ens: String, mode: ResolutionMode) async throws -> EthereumAddress {
+        do {
+            let (resolver, supportingWildCard) = try await getResolver(
+                for: ens,
+                fullName: ens,
+                registryAddress: contract,
+                mode: mode
+            )
+
+            let address = try await resolver.resolve(name: ens, supportingWildcard: supportingWildCard)
+            return address
+        } catch {
+            throw error as? EthereumNameServiceError ?? EthereumNameServiceError.ensUnknown
+        }
+    }
 
     static func nameHash(name: String) -> String {
         ENSContracts.nameHash(name: name)
@@ -147,6 +163,23 @@ extension EthereumNameService {
             }
         }
     }
+    
+    public func resolve(
+        contract: EthereumAddress,
+        ens: String,
+        mode: ResolutionMode,
+        completionHandler: @escaping (Result<EthereumAddress, EthereumNameServiceError>) -> Void
+    ) {
+        Task {
+            do {
+                let address = try await resolve(contract: contract, ens: ens, mode: mode)
+                completionHandler(.success(address))
+            } catch {
+                completionHandler(.failure(error as? EthereumNameServiceError ?? .ensUnknown))
+            }
+        }
+    }
+    
 }
 
 fileprivate extension ResolutionMode {
