@@ -32,6 +32,7 @@ class HttpNetworkProvider: NetworkProviderProtocol {
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("mobile", forHTTPHeaderField: "X-Client-Type")
 
         let id = 1
         let rpcRequest = JSONRPCRequest(jsonrpc: "2.0", method: method, params: params, id: id)
